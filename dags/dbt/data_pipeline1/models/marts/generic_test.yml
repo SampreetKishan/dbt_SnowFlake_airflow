@@ -1,0 +1,51 @@
+version: 2
+
+
+models:
+ - name: stg_tpch_orders
+   columns:
+     - name: order_key
+       tests:
+         - unique
+         - not_null
+     - name: status_code
+       tests:
+         - accepted_values:
+             values: ['P', 'O', 'F']
+ - name: stg_tpch_lineitem
+   columns:
+     - name: order_lineitem_key
+       tests:
+         - unique
+         - not_null
+ - name: orders_lineitems
+   columns:
+     - name: order_key
+       tests:
+         - not_null
+         - relationships:
+             to: ref('stg_tpch_orders')
+             field: order_key
+     - name: order_lineitem_key
+       test:
+         - unique
+         - not_null
+         - relationships:
+             to: ref('stg_tpch_lineitem')
+             field: order_lineitem_key
+ - name: orders_summary
+   columns:
+     - name: order_key
+       tests:
+         - unique
+         - not_null
+ - name: fct_orders
+   columns:
+     - name: order_key
+       tests:
+         - unique
+         - not_null
+    
+
+
+ 
